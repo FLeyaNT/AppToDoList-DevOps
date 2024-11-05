@@ -1,0 +1,21 @@
+﻿@model List<TaskToDo>
+
+
+<h1 class="app-title">To Do App</h1>
+<form class="new-do-input" method="post" asp-controller="Todo" asp-action="Add">
+    <input class="new-do-input-text" type="text" name="desc" placeholder="Добавить новое действие"/>
+    <input class="new-do-input-submit" type="submit" value="Добавить" />
+</form>
+
+<div class="all-tasks">
+    
+    @foreach (TaskToDo task in Model)
+    {
+        <form method="post" class="task" id="@task.Id" asp-controller="Todo" asp-action="Edit">
+            <input class="task-desc" type="text" value="@task.Description" name="desc"/>
+            <input type="hidden" value="@task.Id" name="id" />
+            <input class="edit-btn" type="submit" value="Р" name="action" id="@task.Id" />
+            <input class="delete-btn" type="submit" value="У" name="action" id="@task.Id" />
+        </form>
+    }
+</div>

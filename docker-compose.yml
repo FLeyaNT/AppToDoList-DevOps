@@ -1,0 +1,33 @@
+version: '3.4'
+
+networks:
+  apptodo:
+
+services:
+  apptododb:
+    container_name: app-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password12345
+    networks:
+      - apptodo
+  apptodolist:
+    container_name: app-to-do-list
+    image: ${DOCKER_REGISTRY-}apptodolist
+    build:
+      context: .
+      dockerfile: AppToDoList/Dockerfile
+
+    ports:
+      - 8080:8080
+    depends_on:
+      - apptododb
+    environment:
+      - DB_HOST=apptododb
+      - DB_NAME=ToDoList
+      - DB_PASSWORD=Password12345
+    networks:
+      - apptodo
